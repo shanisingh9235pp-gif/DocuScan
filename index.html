@@ -7,299 +7,446 @@
     <title>DocuScan | GKP-S</title>
 
     <meta name="description"
-          content="DocuScan - Free document scanner, photo to PDF, JPG and PNG converter by GKP-S.">
+          content="DocuScan - Free Document Scanner and Photo Converter by GKP-S">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-        body {
-            background: #f4f7fb;
-            color: #172033;
-            min-height: 100vh;
-        }
+  const firebaseConfig = {
+    apiKey: "AIzaSyCMxb22M6BYWZk9FUZbUnbCIrsUarZZdDw",
+    authDomain: "docuscan-gkps.firebaseapp.com",
+    projectId: "docuscan-gkps",
+    storageBucket: "docuscan-gkps.firebasestorage.app",
+    messagingSenderId: "707107874777",
+    appId: "1:707107874777:web:e4e9389bfe5cd117095bc8",
+    measurementId: "G-W3SSBS74R8"
+  };
 
-        /* HEADER */
-        header {
-            background: linear-gradient(135deg, #0b3d91, #1769d1);
-            color: white;
-            padding: 22px 75px 22px 20px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-        }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+const loginBtn = document.getElementById("loginBtn");
+const loginId = document.getElementById("loginId");
+const loginPassword = document.getElementById("loginPassword");
+const loginError = document.getElementById("loginError");
+const loginScreen = document.getElementById("loginScreen");
 
-        header h1 {
-            font-size: 30px;
-            margin-bottom: 6px;
-        }
+// अपने Firebase में बनाए गए user का Gmail यहाँ डालें
+const firebaseEmail = "shanisingh1069.pp@gmail.com";
 
-        header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
+loginBtn.addEventListener("click", async () => {
+    const enteredId = loginId.value.trim();
+    const password = loginPassword.value;
 
-        /* LOGO */
-        .logo {
-            position: absolute;
-            top: 13px;
-            right: 15px;
-            width: 48px;
-            height: 48px;
-            object-fit: cover;
-            border-radius: 50%;
-            background: white;
-            padding: 3px;
-        }
+    loginError.textContent = "";
 
-        /* MAIN */
-        .container {
-            width: min(1000px, 94%);
-            margin: 25px auto;
-        }
+    if (enteredId !== "GKP-S@shani") {
+        loginError.textContent = "Invalid User ID";
+        return;
+    }
 
-        .welcome {
-            text-align: center;
-            margin-bottom: 22px;
-        }
+    if (!password) {
+        loginError.textContent = "Please enter password";
+        return;
+    }
 
-        .welcome h2 {
-            color: #0b3d91;
-            margin-bottom: 7px;
-        }
+    try {
+        await signInWithEmailAndPassword(auth, firebaseEmail, password);
+    } catch (error) {
+        loginError.textContent = "Invalid ID or Password";
+    }
+});
 
-        .welcome p {
-            color: #667085;
-            font-size: 14px;
-        }
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loginScreen.style.display = "none";
+    } else {
+        loginScreen.style.display = "flex";
+    }
+});
+</script>
+<style>
+.login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: linear-gradient(135deg, #006b3c, #00a86b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        /* ACTION CARDS */
-        .actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
+.login-box {
+    width: min(390px, 100%);
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
 
-        .action-card {
-            background: white;
-            border-radius: 18px;
-            padding: 28px 20px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(20,40,80,0.08);
-            border: 1px solid #e6ebf2;
-            transition: 0.2s;
-        }
+.login-icon {
+    text-align: center;
+    font-size: 45px;
+    margin-bottom: 10px;
+}
 
-        .action-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(20,40,80,0.13);
-        }
+.login-box h2 {
+    text-align: center;
+    color: #006b3c;
+    margin-bottom: 5px;
+}
 
-        .icon {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
+.login-box > p {
+    text-align: center;
+    color: #667085;
+    margin-bottom: 22px;
+}
 
-        .action-card h3 {
-            margin-bottom: 7px;
-            color: #172033;
-        }
+.login-box label {
+    display: block;
+    font-weight: bold;
+    margin: 14px 0 7px;
+}
 
-        .action-card p {
-            font-size: 13px;
-            color: #667085;
-            margin-bottom: 17px;
-        }
+.login-box input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+    font-size: 15px;
+}
 
-        button,
-        .upload-btn {
-            display: inline-block;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 20px;
-            background: #0b3d91;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+#loginBtn {
+    width: 100%;
+    margin-top: 22px;
+    padding: 14px;
+    background: linear-gradient(135deg, #006b3c, #00a86b);
+    color: white;
+    border: none;
+    border-radius: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-        button:hover,
-        .upload-btn:hover {
-            background: #082e6d;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        /* FEATURES */
-        .features {
-            margin-top: 28px;
-            background: white;
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 5px 20px rgba(20,40,80,0.08);
-        }
-
-        .features h2 {
-            text-align: center;
-            color: #0b3d91;
-            margin-bottom: 20px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .feature {
-            background: #f4f7fb;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 28px 15px;
-            margin-top: 25px;
-            color: #667085;
-            font-size: 13px;
-        }
-
-        footer strong {
-            color: #0b3d91;
-        }
-
-        /* MOBILE */
-        @media (max-width: 650px) {
-
-            header h1 {
-                font-size: 25px;
-            }
-
-            .actions {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .action-card {
-                padding: 23px 18px;
-            }
-        }
-    </style>
+#loginError {
+    color: #d92d20;
+    font-size: 13px;
+    margin-top: 12px;
+    text-align: center;
+}
+</style>
 </head>
 
 <body>
 
-<header>
-    <img src="logo.png" class="logo" alt="GKP-S Logo">
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-box">
+        <div class="login-icon">🔐</div>
 
-    <h1>📄 DocuScan</h1>
-    <p>Free Document Scanner & Photo Converter</p>
+        <h2>DocuScan</h2>
+        <p>Login to continue</p>
+
+        <label>User ID</label>
+        <input
+            type="text"
+            id="loginId"
+            placeholder="Enter User ID"
+            autocomplete="username"
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Enter Password"
+            autocomplete="current-password"
+        >
+
+        <button type="button" id="loginBtn">LOGIN</button>
+
+        <p id="loginError"></p>
+    </div>
+</div>
+<header class="topbar">
+
+    <div class="brand">
+        <h1>📄 DocuScan</h1>
+        <p>Free Document Scanner & Converter</p>
+    </div>
+
+    <img src="logo.png.png" class="logo" alt="GKP-S Logo">
+
 </header>
 
 
 <main class="container">
 
-    <section class="welcome">
-        <h2>Scan. Convert. Save.</h2>
+    <section class="hero">
+
+        <h2>Scan. Edit. Convert. Save.</h2>
+
         <p>
-            Convert your documents and photos into PDF, JPG or PNG easily.
+            Turn your documents and photos into professional PDF, JPG or PNG files.
         </p>
+
     </section>
 
 
-    <section class="actions">
+    <!-- MAIN BUTTONS -->
 
-        <!-- CAMERA -->
-        <div class="action-card">
-            <div class="icon">📷</div>
+    <section class="main-actions">
 
-            <h3>Scan with Camera</h3>
+        <label class="main-btn camera-btn">
 
-            <p>
-                Capture a document directly using your phone camera.
-            </p>
-
-            <label for="cameraInput" class="upload-btn">
-                Open Camera
-            </label>
+            📷
+            <span>Camera</span>
 
             <input
                 type="file"
                 id="cameraInput"
                 accept="image/*"
                 capture="environment">
-        </div>
+                
+
+        </label>
 
 
-        <!-- GALLERY -->
-        <div class="action-card">
-            <div class="icon">🖼️</div>
+        <label class="main-btn gallery-btn">
 
-            <h3>Choose from Gallery</h3>
-
-            <p>
-                Select one or multiple photos from your device.
-            </p>
-
-            <label for="galleryInput" class="upload-btn">
-                Select Photos
-            </label>
+            🖼️
+            <span>Gallery</span>
 
             <input
                 type="file"
                 id="galleryInput"
                 accept="image/*"
-                multiple>
+                multiple
+                hidden>
+
+        </label>
+
+    </section>
+
+
+    <!-- PHOTO COUNT -->
+
+    <section class="status-card">
+
+        <div>
+            <strong id="photoCount">0</strong>
+            <span>Photos Selected</span>
+        </div>
+
+        <button id="clearAllBtn" class="danger-btn">
+            🗑️ Clear All
+        </button>
+
+    </section>
+
+
+    <!-- PHOTO PREVIEW -->
+
+    <section class="preview-section">
+
+        <h2>Your Documents</h2>
+
+        <p class="small-text">
+            Drag pages to change their order.
+        </p>
+
+        <div id="photoList" class="photo-list">
+
+            <div id="emptyMessage" class="empty-message">
+
+                <div>📄</div>
+
+                <h3>No photos yet</h3>
+
+                <p>
+                    Capture a document with camera or select photos from gallery.
+                </p>
+
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- FEATURES -->
-    <section class="features">
+    <!-- EDITOR -->
 
-        <h2>Powerful Features</h2>
+    <section id="editor" class="editor hidden">
 
-        <div class="feature-grid">
+        <h2>✏️ Edit Document</h2>
 
-            <div class="feature">✂️ Smart Crop</div>
+        <div class="editor-preview">
 
-            <div class="feature">🔄 Rotate</div>
+            <canvas id="editCanvas"></canvas>
 
-            <div class="feature">☀️ Brightness</div>
+        </div>
 
-            <div class="feature">◐ Contrast</div>
 
-            <div class="feature">⚫ Black & White</div>
+        <div class="editor-tools">
 
-            <div class="feature">✨ Auto Scan</div>
+            <button id="rotateLeft">↶ Rotate</button>
 
-            <div class="feature">📄 PDF</div>
+            <button id="rotateRight">↷ Rotate</button>
 
-            <div class="feature">🖼️ JPG / PNG</div>
+            <button id="cropBtn">✂️ Crop</button>
 
-            <div class="feature">📑 Multiple Pages</div>
+            <button id="bwBtn">⚫ B&W</button>
 
-            <div class="feature">🔀 Merge Files</div>
+        </div>
 
-            <div class="feature">📦 Custom KB Size</div>
 
-            <div class="feature">📤 Share Anywhere</div>
+        <div class="slider-box">
+
+            <label>
+                Brightness
+                <span id="brightnessValue">100%</span>
+            </label>
+
+            <input
+                type="range"
+                id="brightness"
+                min="50"
+                max="150"
+                value="100">
+
+        </div>
+
+
+        <div class="slider-box">
+
+            <label>
+                Contrast
+                <span id="contrastValue">100%</span>
+            </label>
+
+            <input
+                type="range"
+                id="contrast"
+                min="50"
+                max="150"
+                value="100">
+
+        </div>
+
+
+        <button id="applyEditBtn" class="primary-btn">
+            ✓ Apply Changes
+        </button>
+
+    </section>
+
+
+    <!-- OUTPUT SETTINGS -->
+
+    <section class="settings">
+
+        <h2>⚙️ Output Settings</h2>
+
+
+        <label>
+            File Format
+        </label>
+
+        <select id="formatSelect">
+
+            <option value="pdf">PDF</option>
+
+            <option value="jpg">JPG</option>
+
+            <option value="png">PNG</option>
+
+        </select>
+
+
+        <label>
+            PDF Page Size
+        </label>
+
+        <select id="pageSize">
+
+            <option value="a4">A4</option>
+
+            <option value="letter">Letter</option>
+
+            <option value="fit">Fit to Image</option>
+
+        </select>
+
+
+        <label>
+            Target File Size
+        </label>
+
+        <select id="targetSize">
+
+            <option value="best">Best Quality</option>
+
+            <option value="50">50 KB</option>
+
+            <option value="100">100 KB</option>
+
+            <option value="150">150 KB</option>
+
+            <option value="200">200 KB</option>
+
+            <option value="300">300 KB</option>
+
+            <option value="500">500 KB</option>
+
+            <option value="1024">1 MB</option>
+
+            <option value="2048">2 MB</option>
+
+            <option value="custom">Custom KB</option>
+
+        </select>
+
+
+        <input
+            type="number"
+            id="customSize"
+            class="custom-input hidden"
+            placeholder="Enter KB"
+            min="10">
+
+
+        <button id="createBtn" class="create-btn">
+
+            📄 Create Document
+
+       </button>
+    </section>
+
+
+    <!-- RESULT -->
+
+    <section id="result" class="result hidden">
+
+        <h2>✅ Document Ready</h2>
+
+        <p id="resultInfo"></p>
+
+        <div class="result-buttons">
+
+            <button id="downloadBtn">
+                📥 Download
+            </button>
+
+            <button id="shareBtn">
+                📤 Share
+            </button>
 
         </div>
 
@@ -309,35 +456,17 @@
 
 
 <footer>
-    Free to use • Fast • Simple • Secure
+
+    Free • Simple • Powerful
+
     <br><br>
-    <strong>Created by GKP-S</strong>
+
+    <strong><b>Created by GKP-S</b></strong>
+
 </footer>
 
 
-<script>
-
-    const cameraInput = document.getElementById("cameraInput");
-    const galleryInput = document.getElementById("galleryInput");
-
-    cameraInput.addEventListener("change", function () {
-
-        if (this.files.length > 0) {
-            alert("Photo captured successfully! Editing tools will be added next.");
-        }
-
-    });
-
-
-    galleryInput.addEventListener("change", function () {
-
-        if (this.files.length > 0) {
-            alert(this.files.length + " photo(s) selected!");
-        }
-
-    });
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
