@@ -603,32 +603,106 @@ createBtn.addEventListener("click", function () {
 });
 
 
-/* =========================================
-   DOWNLOAD
-========================================= */
+// =====================================
+// DOWNLOAD
+// =====================================
 
-downloadBtn.addEventListener("click", function () {
+if (downloadBtn) {
 
-    alert(
-        "Download engine will be connected in the PDF/JPG/PNG step."
-    );
+    downloadBtn.addEventListener("click", function () {
 
-});
+        if (!generatedBlob) {
+            alert("Please create a document first.");
+            return;
+        }
+
+        const url = URL.createObjectURL(generatedBlob);
+
+        const a = document.createElement("a");
+
+        a.href = url;
+        a.download = generatedFileName;
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        setTimeout(function () {
+            URL.revokeObjectURL(url);
+        }, 1000);
+
+    });
+
+}
 
 
-/* =========================================
-   SHARE
-========================================= */
+// =====================================
+// SHARE
+// =====================================
 
-shareBtn.addEventListener("click", function () {
+if (shareBtn) {
 
-    alert(
-        "Share engine will be connected in the PDF/JPG/PNG step."
-    );
+    shareBtn.addEventListener("click", async function () {
 
-});
+        if (!generatedBlob) {
+            alert("Please create a document first.");
+            return;
+        }
+
+        const file = new File(
+            [generatedBlob],
+            generatedFileName,
+            {
+                type: generatedBlob.type
+            }
+        );
+
+        if (
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({
+                files: [file]
+            })
+        ) {
+
+            try {
+
+                await navigator.share({
+
+                    files: [file],
+
+                    title: "DocuScan",
+
+                    text: "Created with DocuScan by GKP-S"
+
+                });
+
+            } catch (error) {
+
+                console.log("Share cancelled.");
+
+            }
+
+        } else {
+
+            alert(
+                "Sharing is not supported on this browser."
+            );
+
+        }
+
+    });
+
+}
 
 
+// =====================================
+// INITIAL DISPLAY
+// =====================================
+
+renderPhotos();
 /* =========================================
    INITIAL DISPLAY
 ========================================= */
