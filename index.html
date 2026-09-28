@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DocuScan | GKP-S</title>
+
+    <meta name="description"
+          content="DocuScan - Free document scanner, photo to PDF, JPG and PNG converter by GKP-S.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #0b3d91, #1769d1);
+            color: white;
+            padding: 22px 75px 22px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* LOGO */
+        .logo {
+            position: absolute;
+            top: 13px;
+            right: 15px;
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 50%;
+            background: white;
+            padding: 3px;
+        }
+
+        /* MAIN */
+        .container {
+            width: min(1000px, 94%);
+            margin: 25px auto;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .welcome h2 {
+            color: #0b3d91;
+            margin-bottom: 7px;
+        }
+
+        .welcome p {
+            color: #667085;
+            font-size: 14px;
+        }
+
+        /* ACTION CARDS */
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(20,40,80,0.08);
+            border: 1px solid #e6ebf2;
+            transition: 0.2s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(20,40,80,0.13);
+        }
+
+        .icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .action-card h3 {
+            margin-bottom: 7px;
+            color: #172033;
+        }
+
+        .action-card p {
+            font-size: 13px;
+            color: #667085;
+            margin-bottom: 17px;
+        }
+
+        button,
+        .upload-btn {
+            display: inline-block;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            background: #0b3d91;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover,
+        .upload-btn:hover {
+            background: #082e6d;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* FEATURES */
+        .features {
+            margin-top: 28px;
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 5px 20px rgba(20,40,80,0.08);
+        }
+
+        .features h2 {
+            text-align: center;
+            color: #0b3d91;
+            margin-bottom: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .feature {
+            background: #f4f7fb;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 28px 15px;
+            margin-top: 25px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: #0b3d91;
+        }
+
+        /* MOBILE */
+        @media (max-width: 650px) {
+
+            header h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-card {
+                padding: 23px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <img src="logo.png" class="logo" alt="GKP-S Logo">
+
+    <h1>📄 DocuScan</h1>
+    <p>Free Document Scanner & Photo Converter</p>
+</header>
+
+
+<main class="container">
+
+    <section class="welcome">
+        <h2>Scan. Convert. Save.</h2>
+        <p>
+            Convert your documents and photos into PDF, JPG or PNG easily.
+        </p>
+    </section>
+
+
+    <section class="actions">
+
+        <!-- CAMERA -->
+        <div class="action-card">
+            <div class="icon">📷</div>
+
+            <h3>Scan with Camera</h3>
+
+            <p>
+                Capture a document directly using your phone camera.
+            </p>
+
+            <label for="cameraInput" class="upload-btn">
+                Open Camera
+            </label>
+
+            <input
+                type="file"
+                id="cameraInput"
+                accept="image/*"
+                capture="environment">
+        </div>
+
+
+        <!-- GALLERY -->
+        <div class="action-card">
+            <div class="icon">🖼️</div>
+
+            <h3>Choose from Gallery</h3>
+
+            <p>
+                Select one or multiple photos from your device.
+            </p>
+
+            <label for="galleryInput" class="upload-btn">
+                Select Photos
+            </label>
+
+            <input
+                type="file"
+                id="galleryInput"
+                accept="image/*"
+                multiple>
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features">
+
+        <h2>Powerful Features</h2>
+
+        <div class="feature-grid">
+
+            <div class="feature">✂️ Smart Crop</div>
+
+            <div class="feature">🔄 Rotate</div>
+
+            <div class="feature">☀️ Brightness</div>
+
+            <div class="feature">◐ Contrast</div>
+
+            <div class="feature">⚫ Black & White</div>
+
+            <div class="feature">✨ Auto Scan</div>
+
+            <div class="feature">📄 PDF</div>
+
+            <div class="feature">🖼️ JPG / PNG</div>
+
+            <div class="feature">📑 Multiple Pages</div>
+
+            <div class="feature">🔀 Merge Files</div>
+
+            <div class="feature">📦 Custom KB Size</div>
+
+            <div class="feature">📤 Share Anywhere</div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Free to use • Fast • Simple • Secure
+    <br><br>
+    <strong>Created by GKP-S</strong>
+</footer>
+
+
+<script>
+
+    const cameraInput = document.getElementById("cameraInput");
+    const galleryInput = document.getElementById("galleryInput");
+
+    cameraInput.addEventListener("change", function () {
+
+        if (this.files.length > 0) {
+            alert("Photo captured successfully! Editing tools will be added next.");
+        }
+
+    });
+
+
+    galleryInput.addEventListener("change", function () {
+
+        if (this.files.length > 0) {
+            alert(this.files.length + " photo(s) selected!");
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
