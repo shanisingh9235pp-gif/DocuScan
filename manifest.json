@@ -1,0 +1,17 @@
+{
+  "name": "DocuScan - GKP-S",
+  "short_name": "DocuScan",
+  "description": "Free Document Scanner and Photo Converter by GKP-S",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#006b3c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
